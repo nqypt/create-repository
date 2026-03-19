@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ガチャゲーム</title>
+<style>
+    body {
+        font-family: sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+        text-align: center;
+        padding: 50px;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+    }
+
+    button {
+        font-size: 20px;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 10px;
+        background: gold;
+        color: black;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        transform: scale(1.1);
+    }
+
+    #result {
+        margin-top: 40px;
+        font-size: 30px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card {
+        padding: 20px;
+        border-radius: 15px;
+        min-width: 200px;
+        animation: fadeIn 0.6s ease;
+    }
+
+    .N { background: gray; }
+    .R { background: dodgerblue; }
+    .SR { background: purple; }
+    .SSR {
+        background: gold;
+        color: black;
+        font-weight: bold;
+        animation: shine 1s infinite alternate;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.5); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes shine {
+        from { box-shadow: 0 0 10px gold; }
+        to { box-shadow: 0 0 30px white; }
+    }
+
+    #history {
+        margin-top: 30px;
+        font-size: 14px;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: left;
+    }
+</style>
+</head>
+<body>
+
+<h1>🎰 ガチャゲーム</h1>
+<button onclick="drawGacha()">ガチャを引く！</button>
+
+<div id="result"></div>
+
+<div id="history">
+    <h3>履歴</h3>
+    <ul id="historyList"></ul>
+</div>
+
+<script>
+const pool = [
+    { name: "スライム", rarity: "N", rate: 60 },
+    { name: "ゴブリン", rarity: "N", rate: 60 },
+    { name: "ナイト", rarity: "R", rate: 25 },
+    { name: "ウィザード", rarity: "R", rate: 25 },
+    { name: "ドラゴン", rarity: "SR", rate: 10 },
+    { name: "フェニックス", rarity: "SR", rate: 10 },
+    { name: "神龍", rarity: "SSR", rate: 2 }
+];
+
+function drawGacha() {
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "・・・";
+
+    setTimeout(() => {
+        const total = pool.reduce((sum, item) => sum + item.rate, 0);
+        let rand = Math.random() * total;
+
+        let selected = pool.find(item => {
+            rand -= item.rate;
+            return rand <= 0;
+        });
+
+        showResult(selected);
+        addHistory(selected);
+
+    }, 1000);
+}
+
+function showResult(item) {
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = `
+        <div class="card ${item.rarity}">
+            ${item.rarity}：${item.name}
+        </div>
+    `;
+}
+
+function addHistory(item) {
+    const list = document.getElementById("historyList");
+    const li = document.createElement("li");
+    li.textContent = `${item.rarity}：${item.name}`;
+    list.prepend(li);
+}
+</script>
+
+</body>
+</html>
