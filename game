@@ -105,36 +105,4 @@ function drawGacha() {
     resultDiv.innerHTML = "・・・";
 
     setTimeout(() => {
-        const total = pool.reduce((sum, item) => sum + item.rate, 0);
-        let rand = Math.random() * total;
-
-        let selected = pool.find(item => {
-            rand -= item.rate;
-            return rand <= 0;
-        });
-
-        showResult(selected);
-        addHistory(selected);
-
-    }, 1000);
-}
-
-function showResult(item) {
-    const resultDiv = document.getElementById("result");
-    resultDiv.innerHTML = `
-        <div class="card ${item.rarity}">
-            ${item.rarity}：${item.name}
-        </div>
-    `;
-}
-
-function addHistory(item) {
-    const list = document.getElementById("historyList");
-    const li = document.createElement("li");
-    li.textContent = `${item.rarity}：${item.name}`;
-    list.prepend(li);
-}
-</script>
-
-</body>
-</html>
+        const total
